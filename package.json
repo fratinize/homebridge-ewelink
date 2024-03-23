@@ -1,25 +1,77 @@
 {
-  "name": "homebridge-ewelink-complete",
-  "version": "0.1.76",
-  "description": "Fork of homebridge-eWeLink is a Homebrige plugin to control Sonoff relays running OEM firmware",
+  "name": "homebridge-ewelink",
+  "displayName": "Homebridge eWeLink",
+  "alias": "eWeLink",
+  "version": "12.1.1-beta.5",
+  "author": {
+    "name": "bwp91",
+    "email": "bwp91@icloud.com"
+  },
+  "description": "Homebridge plugin to integrate eWeLink devices into HomeKit.",
+  "type": "module",
   "license": "MIT",
   "keywords": [
+    "homebridge",
     "homebridge-plugin",
-    "sonoff"
+    "homebridge-ewelink",
+    "hoobs",
+    "hoobs-plugin",
+    "homekit",
+    "siri",
+    "zigbee",
+    "rf",
+    "ewelink",
+    "sonoff",
+    "eachen",
+    "smartwise"
   ],
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint . --fix",
+    "rebuild": "rm -rf package-lock.json && rm -rf node_modules && npm install"
+  },
   "engines": {
-    "node": ">=0.12.0",
-    "homebridge": ">=0.2.0"
+    "homebridge": "^1.6.0",
+    "node": "^18.19.1 || ^20.11.1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ronnieroberts/homebridge-ewelink.git"
+    "url": "https://github.com/bwp91/homebridge-ewelink.git"
   },
+  "bugs": {
+    "url": "https://github.com/bwp91/homebridge-ewelink/issues"
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/bwp91"
+    },
+    {
+      "type": "kofi",
+      "url": "https://ko-fi.com/bwp91"
+    },
+    {
+      "type": "patreon",
+      "url": "https://www.patreon.com/bwp91"
+    },
+    {
+      "type": "paypal",
+      "url": "https://www.paypal.me/BenPotter"
+    }
+  ],
   "dependencies": {
-    "ewelink-api": "^2.0.0",
-    "nonce": "^1.0.4",
-    "npmrc": "^1.1.1",
-    "request-json": "^0.6.2",
-    "ws": "^3.3.2"
+    "@homebridge/plugin-ui-utils": "^1.0.1",
+    "axios": "^1.6.8",
+    "node-persist": "^4.0.1",
+    "p-queue": "^8.0.1",
+    "websocket-as-promised": "^2.0.1",
+    "ws": "^8.16.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-import-newlines": "^1.4.0",
+    "eslint-plugin-sort-exports": "^0.9.1"
   }
 }

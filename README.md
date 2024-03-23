@@ -1,115 +1,66 @@
-## This is a fork of homebridge-ewelink
+<p align="center">
+   <a href="https://github.com/bwp91/homebridge-ewelink"><img alt="Homebridge Verified" src="https://user-images.githubusercontent.com/43026681/101325266-63126600-3863-11eb-9382-4a2924f0e540.png" width="600px"></a>
+</p>
+<span align="center">
+  
+# homebridge-ewelink
 
-The largest change here is to use evelink-api for all API needs rather than rewrite
+Homebridge plugin to integrate eWeLink devices into HomeKit
 
-# homebridge-ewelink-complete
-Homebridge plugin to control Sonoff relays with OEM firmware. It uses the same API as the iOS app to communicate with your devices.
+[![npm](https://img.shields.io/npm/v/homebridge-ewelink/latest?label=latest)](https://www.npmjs.com/package/homebridge-ewelink)
+[![npm](https://img.shields.io/npm/v/homebridge-ewelink/beta?label=beta)](https://github.com/bwp91/homebridge-ewelink/wiki/Beta-Version)  
+[![verified-by-homebridge](https://badgen.net/badge/homebridge/verified/purple)](https://github.com/homebridge/homebridge/wiki/Verified-Plugins)
+[![hoobs-certified](https://badgen.net/badge/HOOBS/certified/yellow?label=hoobs)](https://plugins.hoobs.org/plugin/homebridge-ewelink)  
+[![npm](https://img.shields.io/npm/dt/homebridge-ewelink)](https://www.npmjs.com/package/homebridge-ewelink)
+[![Discord](https://img.shields.io/discord/432663330281226270?color=728ED5&logo=discord&label=hb-discord)](https://discord.com/channels/432663330281226270/742733745743855627)
 
-The platform will dynamically add/remove devices based on what is configured in your eWeLink account.
+</span>
 
-It has been tested with the [Sonoff basic](http://sonoff.itead.cc/en/products/sonoff/sonoff-basic) relays. I have performed testing with up to two relays associated to my account.
+### Plugin Information
 
-The plugin will only support one eWeLink account.
+- This plugin allows you to view and control your eWeLink devices within HomeKit. The plugin:
+  - requires your eWeLink credentials to download a device list
+  - attempts to control your supported devices locally, reverting to cloud control if necessary
+  - listens for real-time device updates when controlled externally
+  - supports removing your eWeLink credentials from the configuration in certain situations, see [wiki](https://github.com/bwp91/homebridge-ewelink/wiki/Connection-Methods#lan-mode-without-ewelink-credentials)
 
-It is possible to continute to use the OEM functionality (eWeLink app, Google Home integration); this plugin requires no modification to the relay's firmware.
+### Prerequisites
 
-## Shortcomings
+- To use this plugin, you will need to already have:
+  - [Node](https://nodejs.org): latest version of `v18` or `v20` - any other major version is not supported.
+  - [Homebridge](https://homebridge.io): `v1.6` - refer to link for more information and installation instructions.
 
-The plugin uses the same credentials as the eWeLink app. In order to obtain the authenticationToken, you'll need to use Charles to inspect the traffic and grab the value from the Authorization header. See below for information on how to obtain this value.
+### Setup
 
-Also, the code is of suboptimal quality. It was a quick-and-dirty plugin; feel free to contribute & improve.
+- [Installation](https://github.com/bwp91/homebridge-ewelink/wiki/Installation)
+- [Configuration](https://github.com/bwp91/homebridge-ewelink/wiki/Configuration)
+- [Beta Version](https://github.com/homebridge/homebridge/wiki/How-to-Install-Alternate-Plugin-Versions)
+- [Node Version](https://github.com/bwp91/homebridge-ewelink/wiki/Node-Version)
 
-## Steps to install / configure
+### Features
 
-*Assuming that you've already downloaded the eWeLink app on your iOS device & have configured it:*
+- [Supported Devices](https://github.com/bwp91/homebridge-ewelink/wiki/Supported-Devices)
+- [Accessory Simulations](https://github.com/bwp91/homebridge-ewelink/wiki/Accessory-Simulations)
+- [Connection Methods](https://github.com/bwp91/homebridge-ewelink/wiki/Connection-Methods)
+- [Internal API](https://github.com/bwp91/homebridge-ewelink/wiki/Internal-API)
 
-1) Install the plugin
-```
-sudo npm -g install homebridge-ewelink-complete
-```
+### Help/About
 
-2) Add to the platforms[] section of config.json. Steps for obtaining the values for authenticationToken, apiHost, and webSocketApi can be found below.
+- [Common Errors](https://github.com/bwp91/homebridge-ewelink/wiki/Common-Errors)
+- [Support Request](https://github.com/bwp91/homebridge-ewelink/issues/new/choose)
+- [Changelog](https://github.com/bwp91/homebridge-ewelink/blob/latest/CHANGELOG.md)
+- [About Me](https://github.com/sponsors/bwp91)
 
-3) Restart Homebridge
+### Credits
 
-### Sample config.json
+- To the original plugin maintainer: [@gbro115](https://github.com/gbro115).
+- To successive contributors: [@MrTomAsh](https://github.com/MrTomAsh) and [@howanghk](https://github.com/howanghk) for [homebridge-ewelink-max](https://github.com/howanghk/homebridge-ewelink).
+- To the creators/contributors of [Homebridge](https://homebridge.io) who make this plugin possible.
+- To the creators/contributors of [Fakegato](https://github.com/simont77/fakegato-history): [@simont77](https://github.com/simont77) and [@NorthernMan54](https://github.com/NorthernMan54).
+- To the creator of the awesome plugin header logo: [Keryan Belahcene](https://www.instagram.com/keryan.me).
+- To all users who have shared their devices to enable functionality.
 
-```
-{
-    "bridge": {
-        "name": "Homebridge",
-        "username": "XX:XX:XX:XX:XX:XX",
-        "port": 51826,
-        "pin": "123-45-678"
-    },
-    
-    "description": "Your description here",
+### Disclaimer
 
-    "accessories": [
-    ],
-
-    "platforms": [
- {
-            "platform": "eWeLink",
-            "name": "eWeLink",
-            "phoneNumberOrEmail": "YOUR_ACCOUNT_EMAIL_OR_PHONE",
-            "accountPassword": "YOUR_ACCOUNT_PASSWORD",
-            "apiHost": "us-api.coolkit.cc:8080",
-            "webSocketApi": "us-long.coolkit.cc",
-            "debug": "true"
-        }    ]
-}
-```
-
-### A note on the authenticationToken
-
-The authentication token is generated every time your device's app logs in to the eWeLink service. Based on my limited testing, the session seems to persist for quite some time.
-
-You can only have one authentication token per user account. 
-
-If you logout and login to the app again, you'll need to perform the above steps to get things working again.
-
-## Troubleshooting
-
-I've attempted to make the logging as useful as possible. If you have any suggestions, please open an issue on GitHub.  I've also hidden most logging behind the debug parameter, please set to true or false accordingly
-
-## Sample logging
-
-```
-[12/13/2017, 9:39:05 PM] [eWeLink] A total of [1] accessories were loaded from the local cache
-[12/13/2017, 9:39:05 PM] [eWeLink] Requesting a list of devices from eWeLink HTTPS API at [https://us-api.coolkit.cc:8080]
-[12/13/2017, 9:39:06 PM] [eWeLink] eWeLink HTTPS API reports that there are a total of [1] devices registered
-[12/13/2017, 9:39:06 PM] [eWeLink] Evaluating if devices need to be removed...
-[12/13/2017, 9:39:06 PM] [eWeLink] Verifying that all cached devices are still registered with the API. Devices that are no longer registered with the API will be removed.
-[12/13/2017, 9:39:06 PM] [eWeLink] Device [Fan] is regeistered with API. Nothing to do.
-[12/13/2017, 9:39:06 PM] [eWeLink] Evaluating if new devices need to be added...
-[12/13/2017, 9:39:06 PM] [eWeLink] Device with ID [XXXXXXX] is already configured. Ensuring that the configuration is current.
-[12/13/2017, 9:39:06 PM] [eWeLink] Updating recorded Characteristic.On for [Fan] to [false]. No request will be sent to the device.
-[12/13/2017, 9:39:06 PM] [eWeLink] Setting power state to [off] for device [Fan]
-[12/13/2017, 9:39:06 PM] [eWeLink] API key retrieved from web service is [XXXXXXX]
-[12/13/2017, 9:39:06 PM] [eWeLink] Connecting to the WebSocket API at [wss://us-long.coolkit.cc:8080/api/ws]
-[12/13/2017, 9:39:06 PM] [eWeLink] Sending login request [{"action":"userOnline","userAgent":"app","version":6,"nonce":"151321914688000","apkVesrion":"1.8","os":"ios","at":"XXXXXXX","apikey":"xxxxxxx","ts":"1513219146","model":"iPhone10,6","romVersion":"11.1.2","sequence":1513219146880}]
-[12/13/2017, 9:39:06 PM] [eWeLink] WebSocket messge received:  {"error":0,"apikey":"xxxxxxx","config":{"hb":1,"hbInterval":145},"sequence":"1513219146880"}
-```
-
-*Hey Siri, turn on the fan*
-```
-[12/13/2017, 9:39:09 PM] [eWeLink] Setting power state to [on] for device [Fan]
-[12/13/2017, 9:39:09 PM] [eWeLink] WebSocket messge received:  {"error":0,"deviceid":"XXXXXXX","apikey":"XXXXXXX","sequence":"1513219149620"}
-[12/13/2017, 9:39:11 PM] [eWeLink] Setting power state to [off] for device [Fan]
-[12/13/2017, 9:39:12 PM] [eWeLink] WebSocket messge received:  {"error":0,"deviceid":"XXXXXXX","apikey":"XXXXXXX","sequence":"1513219151735"}
-```
-
-The plugin will also listen for announcements via a persistent web socket. This allows you to control the device from the likes of Google Home & have Homebridge be kept up-to-date
-
-*Hey Google, turn on the fan*
-```
-[12/13/2017, 9:41:50 PM] [eWeLink] Update message received for device [XXXXXXX]
-[12/13/2017, 9:41:50 PM] [eWeLink] Updating recorded Characteristic.On for [Fan] to [true]. No request will be sent to the device.
-[12/13/2017, 9:41:50 PM] [eWeLink] Setting power state to [on] for device [Fan]
-[12/13/2017, 9:41:50 PM] [eWeLink] WebSocket messge received:  {"error":0,"deviceid":"XXXXXXX","apikey":"XXXXXXX","sequence":"1513219310003"}
-```
-## Credits
-
-So many... needs updated.  This is a fork of homebridge-ewelink
-
+- I am in no way affiliated with eWeLink nor any of the device brands (like Sonoff) and this plugin is a personal project that I maintain in my free time.
+- Use this plugin entirely at your own risk - please see licence for more information.
